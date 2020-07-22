@@ -2,16 +2,16 @@
 
 ### 1.原型 / 构造函数 / 实例
 
-[原型](https://github.com/KieSun/Dream/issues/2)
+- [原型](https://github.com/KieSun/Dream/issues/2)
 
-- 原型`(prototype)`: 一个简单的对象，用于实现对象的 属性继承。可以简单的理解成对象的爹。在 Firefox 和 Chrome 中，每个JavaScript对象中都包含一个`__proto__` (非标准)的属性指向它爹(该对象的原型)，可`obj.__proto__`进行访问。
-- 构造函数: 可以通过`new`来 新建一个对象 的函数。
-- 实例: 通过构造函数和new创建出来的对象，便是实例。 实例通`过__proto__`指向原型，通过`constructor`指向构造函数。
-- [实例](https://user-gold-cdn.xitu.io/2019/2/14/168e9d9b940c4c6f?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
+    - 原型`(prototype)`: 一个简单的对象，用于实现对象的 属性继承。可以简单的理解成对象的爹。在 Firefox 和 Chrome 中，每个JavaScript对象中都包含一个`__proto__` (非标准)的属性指向它爹(该对象的原型)，可`obj.__proto__`进行访问。
+    - 构造函数: 可以通过`new`来 新建一个对象 的函数。
+    - 实例: 通过构造函数和new创建出来的对象，便是实例。 实例通`过__proto__`指向原型，通过`constructor`指向构造函数。
+    - [实例](https://user-gold-cdn.xitu.io/2019/2/14/168e9d9b940c4c6f?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
 
 ### 2.原型链
 
-**原型链是由原型对象组成**，每个对象都有` __proto__` 属性，指向了创建该对象的构造函数的原型，`__proto__` 将对象连接起来组成了原型链。是一个用来实现继承和共享属性的有限的对象链。
+- **原型链是由原型对象组成**，每个对象都有` __proto__` 属性，指向了创建该对象的构造函数的原型，`__proto__` 将对象连接起来组成了原型链。是一个用来实现继承和共享属性的有限的对象链。
 
 ### 3.执行上下文
 
@@ -94,6 +94,168 @@
 - `instanceof`
 
    - `instanceof`可以正确的判断对象的类型，因为内部机制是通过判断对象的原型链中是不是能找到类型的`prototype`
+
+- `this`
+
+   - 绑定规则
+      - 默认绑定
+         - 独立函数调用，可以把默认绑定看作是无法应用其他规则时的默认规则，`this`指向全局对象
+         - 严格模式下，不能将全局对象用于默认绑定，`this`会绑定到`undefined`。只有函数运行在非严格模式下，默认绑定才能绑定到全局对象。在严格模式下调用函数则不影响默认绑定。
+            - ```
+                function foo() { // 运行在严格模式下，this会绑定到undefined
+                    "use strict";
+                    
+                    console.log( this.a );
+                }
+
+                var a = 2;
+
+                // 调用
+                foo(); // TypeError: Cannot read property 'a' of undefined
+
+                // --------------------------------------
+
+                function foo() { // 运行
+                    console.log( this.a );
+                }
+
+                var a = 2;
+
+                (function() { // 严格模式下调用函数则不影响默认绑定
+                    "use strict";
+                    
+                    foo(); // 2
+                })();
+               ```
+
+      - 隐式绑定
+         - 当函数引用有上下文对象时，隐式绑定规则会把函数中的this绑定到这个上下文对象。对象属性引用链中只有上一层或者说最后一层在调用中起作用。
+            - ```
+                function foo() {
+                    console.log( this.a );
+                }
+
+                var obj = {
+                    a: 2,
+                    foo: foo
+                };
+
+                obj.foo(); // 2
+              ```
+         - 隐式丢失
+            - 隐式绑定的函数特定情况下会丢失绑定对象，应用默认绑定，把`this`绑定到全局对象或者`undefined`上。
+               - ```
+                    // 虽然bar是obj.foo的一个引用，但是实际上，它引用的是foo函数本身。
+                    // bar()是一个不带任何修饰的函数调用，应用默认绑定。
+                    function foo() {
+                        console.log( this.a );
+                    }
+
+                    var obj = {
+                        a: 2,
+                        foo: foo
+                    };
+
+                    var bar = obj.foo; // 函数别名
+
+                    var a = "oops, global"; // a是全局对象的属性
+
+                    bar(); // "oops, global"
+                 ``` 
+            - 参数传递就是一种隐式赋值，传入函数时也会被隐式赋值。回调函数丢失this绑定是非常常见的。
+               - ```
+                    function foo() {
+                        console.log( this.a );
+                    }
+
+                    function doFoo(fn) {
+                        // fn其实引用的是foo
+                        
+                        fn(); // <-- 调用位置！
+                    }
+
+                    var obj = {
+                        a: 2,
+                        foo: foo
+                    };
+
+                    var a = "oops, global"; // a是全局对象的属性
+
+                    doFoo( obj.foo ); // "oops, global"
+
+                    // ----------------------------------------
+
+                    // JS环境中内置的setTimeout()函数实现和下面的伪代码类似：
+                    function setTimeout(fn, delay) {
+                        // 等待delay毫秒
+                        fn(); // <-- 调用位置！
+                    }
+                 ```
+         - 显式绑定
+        
+           - 通过`call(..)`或者`apply(..)`方法。第一个参数是一个对象，在调用函数时将这个对象绑定到`this`。因为直接指定`this`的绑定对象，称之为显示绑定。
+              - ```
+                function foo() {
+                    console.log( this.a );
+                }
+
+                var obj = {
+                    a: 2
+                };
+
+                foo.call( obj ); // 2  调用foo时强制把foo的this绑定到obj上
+                ```
+
+         - `new`绑定
+            - 使用`new`来调用`foo(..)`时，会构造一个新对象并把它`(bar)`绑定到`foo(..)`调用中的this。
+               - ```
+                    function foo(a) {
+                        this.a = a;
+                    }
+
+                    var bar = new foo(2); // bar和foo(..)调用中的this进行绑定
+                    console.log( bar.a ); // 2
+                 ```
+         - 箭头函数
+            - 根据外层（函数或者全局）作用域（词法作用域）来决定`this`
+            - 箭头函数的绑定无法被修改
+               - ```
+                    function foo() {
+                        // 返回一个箭头函数
+                        return (a) => {
+                            // this继承自foo()
+                            console.log( this.a );
+                        };
+                    }
+
+                    var obj1 = {
+                        a: 2
+                    };
+
+                    var obj2 = {
+                        a: 3
+                    }
+
+                    var bar = foo.call( obj1 );
+                    bar.call( obj2 ); // 2，不是3！
+                 ```
+            - ES6之前和箭头函数类似的模式，采用的是词法作用域取代了传统的`this`机制。
+               - ```
+                    function foo() {
+                        var self = this; // lexical capture of this
+                        setTimeout( function() {
+                            console.log( self.a ); // self只是继承了foo()函数的this绑定
+                        }, 100 );
+                    }
+
+                    var obj = {
+                        a: 2
+                    };
+
+                    foo.call(obj); // 2
+                 ```
+
+
 
 
 
