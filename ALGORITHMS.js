@@ -80,10 +80,27 @@ Function.prototype.apply = function(context, arr) {
 }
 
 // bind
+
 Function.prototype.bind = function(context) {
     var self = this
     args = Array.prototype.slice.call(arguments);
     return function() {
         return self.apply(context, args.slice(1));
+    }
+}
+
+// instaceof
+
+function instaceof(left, right){
+    let proptype = right.proptype
+    let left = left.__proto__
+    while(true) {
+        if(left === null) {
+            return false
+        }
+        if(left === proptype) {
+            return true
+        }
+        left = left.__proto__
     }
 }
