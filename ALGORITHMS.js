@@ -104,3 +104,41 @@ function instaceof(left, right){
         left = left.__proto__
     }
 }
+
+// 防抖 多次高频操作优化为只在最后一次执行
+
+function debounce(fn, wait, immediate) {
+    let timer = null
+    return function() {
+        if(!timer && immediate) {
+            fn.apply(this, arguments)
+        }
+        if(timer) {
+            clearTimeout(timer)
+        }
+        timer = setTimeout(() => {
+            fn.apply(this, arguments)
+        }, wait)
+    }
+}
+
+// 节流 每隔一段时间后执行一次
+
+function throttle(fn, wait, immediate) {
+    let timer = null
+    let _immediate = immediate
+    return function() {
+        if(_immediate) {
+            fn.apply(this, arguments)
+            _immediate = false
+        }
+        if(!timer) {
+            timer = setTimeout(() => {
+                fn.apply(this, arguments)
+                timer = null
+            }, wait)
+        }
+    }
+
+
+}
