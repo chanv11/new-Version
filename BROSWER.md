@@ -294,4 +294,4 @@
             - 如果一个请求在上述3个位置都没有找到缓存，那么浏览器会正式发送网络请求去获取内容
             - 根据`Service Worker`中的`handler`决定是否存入`Cache Storage`(额外的缓存位置)
             - 根据 HTTP 头部的相关字段(`Cache-control`, `Pragma`等)决定是否存入 `disk cache`
-            - memory cache 保存一份资源 的引用，以备下次使用
+            - `memory cache`保存一份资源的引用，以备下次使用
