@@ -90,3 +90,116 @@
         }
         ```
    - 设置同域下共享的`localStorage`与监听`window.onstorage`
+
+### 3.Event Loop
+
+   - JS分为同步任务和异步任务
+   - 同步任务都在主线程上执行，形成一个执行栈
+   - 主线程之外，事件触发线程管理着一个任务队列，只要异步任务有了运行结果，就在任务队列之中放置一个事件。
+   - 旦执行栈中的所有同步任务执行完毕（此时JS引擎空闲），系统就会读取任务队列，将可运行的异步任务添加到可执行栈中，开始执行。
+   - 宏任务
+
+      - 可以理解是每次执行栈执行的代码就是一个宏任务
+      - `script`(整体代码)、`setTimeout`、`setInterval`、`I/O`、`UI交互事件`、`postMessage`、`MessageChannel`、`setImmediate`(Node.js 环境)
+   
+   - 微任务
+
+      - 当前task执行结束后立即执行的任务
+      - `Promise.then`、`MutaionObserver`、`process.nextTick`(Node.js 环境)
+
+   - 运行机制
+
+      - 执行一个宏任务
+      - 执行过程中如果遇到微任务，就将它添加到微任务的任务队列中
+      - 宏任务执行完毕后，立即执行当前微任务队列中的所有微任务
+      - 当前宏任务执行完毕，开始检查渲染，然后GUI线程接管渲染
+      - 渲染完毕后，JS线程继续接管，开始下一个宏任务（从事件队列中获取）
+
+   - ```
+        //请写出输出内容
+        async function async1() {
+            console.log('async1 start');
+            await async2();
+            console.log('async1 end');
+        }
+        async function async2() {
+            console.log('async2');
+        }
+
+        console.log('script start');
+
+        setTimeout(function() {
+            console.log('setTimeout');
+        }, 0)
+
+        async1();
+
+        new Promise(function(resolve) {
+            console.log('promise1');
+            resolve();
+        }).then(function() {
+            console.log('promise2');
+        });
+        console.log('script end');
+
+
+        /*
+        script start
+        async1 start
+        async2
+        promise1
+        script end
+        async1 end
+        promise2
+        setTimeout
+        */
+     ```
+
+   - ```
+        async function a1 () {
+            console.log('a1 start')
+            await a2()
+            console.log('a1 end')
+        }
+        async function a2 () {
+            console.log('a2')
+        }
+
+        console.log('script start')
+
+        setTimeout(() => {
+            console.log('setTimeout')
+        }, 0)
+
+        Promise.resolve().then(() => {
+            console.log('promise1')
+        })
+
+        a1()
+
+        let promise2 = new Promise((resolve) => {
+            resolve('promise2.then')
+            console.log('promise2')
+        })
+
+        promise2.then((res) => {
+            console.log(res)
+            Promise.resolve().then(() => {
+                console.log('promise3')
+            })
+        })
+        console.log('script end')
+
+        /*
+        script start
+        a1 start
+        a2
+        promise2
+        script end
+        promise1
+        a1 end
+        promise2.then
+        promise3
+        setTimeout
+        */
+     ```
