@@ -359,6 +359,110 @@
 
       - 后者会编译成 require/exports 来执行的
 
+### 11.继承
+
+   - 1、原型链继承
+
+     - 缺点: 多个实例对引用类型的操作会被篡改。
+      - ```
+        function SuperType() {
+            this.property = true;
+        }
+
+        SuperType.prototype.getSuperValue = function() {
+            return this.property;
+        }
+
+        function SubType() {
+            this.subproperty = false;
+        }
+
+        // 这里是关键，创建SuperType的实例，并将该实例赋值给SubType.prototype
+        SubType.prototype = new SuperType(); 
+        ```
+
+   - 构造函数继承
+      
+      - ```
+        function SuperType(){
+            this.color=["red","green","blue"];
+        }
+        function SubType(){
+            //继承自SuperType
+            SuperType.call(this);
+        }
+        ```
+    
+   - 组合继承
+
+      - ```
+        function SuperType(name){
+            this.name = name;
+            this.colors = ["red", "blue", "green"];
+        }
+        SuperType.prototype.sayName = function(){
+            alert(this.name);
+        };
+
+        function SubType(name, age){
+            // 继承属性
+            // 第二次调用SuperType()
+            SuperType.call(this, name);
+            this.age = age;
+        }
+
+        // 继承方法
+        // 构建原型链
+        // 第一次调用SuperType()
+        SubType.prototype = new SuperType(); 
+        ```
+   - 寄生式继承
+
+      - ```
+         function createAnother(original){
+            var clone = object(original); // 通过调用 object() 函数创建一个新对象
+            clone.sayHi = function(){  // 以某种方式来增强对象
+                alert("hi");
+            };
+            return clone; // 返回这个对象
+        }
+        ```
+
+   - 寄生组合式继承
+
+      - ```
+        function inheritPrototype(subType, superType){
+            var prototype = Object.create(superType.prototype); // 创建对象，创建父类原型的一个副本
+            prototype.constructor = subType;                    // 增强对象，弥补因重写原型而失去的默认的constructor 属性
+            subType.prototype = prototype;                      // 指定对象，将新创建的对象赋值给子类的原型
+        }
+
+        // 父类初始化实例属性和原型属性
+        function SuperType(name){
+            this.name = name;
+            this.colors = ["red", "blue", "green"];
+        }
+        SuperType.prototype.sayName = function(){
+            alert(this.name);
+        };
+
+        // 借用构造函数传递增强子类实例属性（支持传参和避免篡改）
+        function SubType(name, age){
+            SuperType.call(this, name);
+            this.age = age;
+        }
+
+        // 将父类原型指向子类
+        inheritPrototype(SubType, SuperType);
+        ```
+
+   - class extend
+
+      - ES5的继承实质上是先创建子类的实例对象，然后再将父类的方法添加到this上（Parent.call(this)）
+
+      - ES6的继承有所不同，实质上是先创建父类的实例对象this，然后再用子类的构造函数修改this。因为子类没有自己的this对象，所以必须先调用父类的super()方法，否则新建实例报错。
+
+
     
 
 
