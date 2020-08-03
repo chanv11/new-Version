@@ -1,0 +1,101 @@
+<html>
+    <body>
+        <input class="input" type="text" />
+        <p class="text"></p>
+    </body>
+    <script>
+                // 依赖收集器
+        class Dep {
+            constructor() {
+                this.subs = []
+            }
+            addSub(sub) {
+                this.subs.push(sub)
+            }
+            notify() {
+                this.subs.map(sub => {
+                    sub.update()
+                })
+            }
+        }
+
+        Dep.target = null
+
+        // 观察者
+        class Watcher {
+            constructor(obj, key, cb) {
+                console.log('Watcher')
+                Dep.target = this
+                this.cb = cb
+                this.obj = obj
+                this.key = key
+                this.value = obj[key]
+                Dep.target = null
+            }
+            addDep(Dep) {
+                Dep.addSub(this)
+            }
+            update() {
+                this.value = this.obj[this.key]
+                this.cb(this.value)
+            }
+            before() {
+                callHook('beforeUpdate')
+            }
+        }
+        // 简单表示用于数据更新后的操作
+        function updateComponent(value) {
+            document.querySelector('p').innerText = value
+        }
+
+        // 监视对象
+        function observe(obj) {
+            // 遍历对象，使用 get/set 重新定义对象的每个属性值
+            Object.keys(obj).map(key => {
+                defineReactive(obj, key, obj[key])
+            })
+        }
+
+        function defineReactive(obj, k, v) {
+            
+            // 递归子属性
+            if (typeof v === 'object') {
+                observe(v)
+            }
+            
+            // 新建依赖收集器
+            let dep = new Dep()
+            console.log('1', Dep.target)
+            // 定义get/set
+            Object.defineProperty(obj, k, {
+                enumerable: true,
+                configurable: true,
+                get: function reactiveGetter() {
+                    console.log('2', Dep.target)
+                    // 当有获取该属性时，证明依赖于该对象，因此被添加进收集器中
+                    if (Dep.target) {
+                        dep.addSub(Dep.target)
+                    }
+                    return v
+                },
+                // 重新设置值时，触发收集器的通知机制
+                set: function reactiveSetter(nV) {
+                    v = nV
+                    dep.notify()
+                },
+            })
+        }
+
+        let data = {a: 1}
+        
+        // 数据响应性
+        observe(data)
+        
+        // 初始化观察者
+        new Watcher(data, 'a', updateComponent)
+        data.a = 2
+
+
+
+    </script>
+</html>

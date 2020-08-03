@@ -26,7 +26,7 @@ function cloneDeep(source, hash = new WeakMap()) {
         }  
     }
     // =============
-    for(key in source) {
+    for(var key in source) {
         if(Object.prototype.hasOwnProperty.call(source, key)) {
             if(isObject(source[key])) {
                 target[key] = cloneDeep(source[key], hash)
