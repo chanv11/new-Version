@@ -24,7 +24,6 @@
         // 观察者
         class Watcher {
             constructor(obj, key, cb) {
-                console.log('Watcher')
                 Dep.target = this
                 this.cb = cb
                 this.obj = obj
@@ -65,13 +64,11 @@
             
             // 新建依赖收集器
             let dep = new Dep()
-            console.log('1', Dep.target)
             // 定义get/set
             Object.defineProperty(obj, k, {
                 enumerable: true,
                 configurable: true,
                 get: function reactiveGetter() {
-                    console.log('2', Dep.target)
                     // 当有获取该属性时，证明依赖于该对象，因此被添加进收集器中
                     if (Dep.target) {
                         dep.addSub(Dep.target)
