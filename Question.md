@@ -79,8 +79,15 @@
    - 不可以使用 yield 命令，因此箭头函数不能用作 Generator 函数。
    - 不可以使用 new 命令
 
-### 数组里面有10万个数据，取第一个元素和第10万个元素的时间相差多少
+### 6.数组里面有10万个数据，取第一个元素和第10万个元素的时间相差多少
 
    - 数组可以直接根据索引取的对应的元素，所以不管取哪个位置的元素的时间复杂度都是 O(1)
+
+### 7.`isNaN`与`Number.isNaN`的区别
+   - `Number.isNaN`与`isNaN`最的区别是，`Number.isNaN`不存在类型转换的行为
+   - ```
+        console.log(isNaN('测试')) //true
+        console.log(Number.isNaN('测试')) //false
+     ```
 
 

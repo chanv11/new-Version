@@ -177,6 +177,31 @@
          - 遍历`patchs`， 把需要更改的节点取出来
          - 局部更新`dom`
 
+### 5.vux
+
+   - Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式
+      - state: 状态仓库
+      - getter: 可以认为是 store 的计算属性,getter 的返回值会根据它的依赖被缓存起来，且只有当它的依赖值发生了改变才会被重新计算，可通过方法访问
+         - ```
+            getters: {
+                // ...
+                getTodoById: (state) => (id) => {
+                    return state.todos.find(todo => todo.id === id)
+                }
+            }
+           ```
+         - mapGetters
+            - ```
+                computed: {
+                    // 使用对象展开运算符将 getter 混入 computed 对象中
+                    ...mapGetters([
+                    'doneTodosCount',
+                    'anotherGetter',
+                    // ...
+                    ])
+                }
+              ```
+
 
 
 
