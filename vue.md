@@ -201,6 +201,50 @@
                     ])
                 }
               ```
+       - Mutation
+          - 更改 Vuex 的 store 中的状态的唯一方法，接受 state 作为第一个参数
+          - 调用`store.commit`方法，唤醒一个 mutation
+          - Mutation 必须是同步函数
+       - Action
+          - Action 提交的是 mutation，而不是直接变更状态
+          - Action 可以包含任意异步操作
+          - Action 通过`store.dispatch `触发
+      - Module
+         - 由于使用单一状态树，应用的所有状态会集中到一个比较大的对象。当应用变得非常复杂时，store 对象就有可能变得相当臃肿,Vuex 允许我们将 store 分割成模块（module）。每个模块拥有自己的 state、mutation、action、getter、甚至是嵌套子模块——从上至下进行同样方式的分割
+         - `namespaced: true` 使其成为带命名空间的模块
+         - 带命名空间的模块内访问全局内容
+            - 如果你希望使用全局 state 和 getter，rootState 和 rootGetters 会作为第三和第四参数传入 getter，也会通过 context 对象的属性传入 action。
+            - 若需要在全局命名空间内分发 action 或提交 mutation，将 { root: true } 作为第三参数传给 dispatch 或 commit 即可
+
+### 6.插件
+   - 插件通常用来为 Vue 添加全局功能
+   - 通过全局方法 `Vue.use()` 使用插件。它需要在你调用 `new Vue()` 启动应用之前完成
+   - Vue.js 的插件应该暴露一个`install`方法。这个方法的第一个参数是`Vue `构造器，第二个参数是一个可选的选项对象
+
+### 7.注册或获取全局指令
+   - ```
+        // 注册一个全局自定义指令 `v-focus`
+        Vue.directive('focus', {
+        // 当被绑定的元素插入到 DOM 中时……
+        inserted: function (el) {
+            // 聚焦元素
+            el.focus()
+        }
+        })
+     ```
+
+### 8.keep-alive
+   - 可以使被包含的组件保留状态，或避免重新渲染
+   - include - 字符串或正则表达式，只有名称匹配的组件会被缓存
+   - exclude - 字符串或正则表达式，任何名称匹配的组件都不会被缓存
+   - include 和 exclude 的属性允许组件有条件地缓存。二者都可以用“，”分隔字符串、正则表达式、数组。当使用正则或者是数组时，要记得使用v-bind
+
+### 9.vue常用的修饰符
+   - prevent: 提交事件不再重载页面；.stop: 阻止单击事件冒泡；.self: 当事件发生在该元素本身而不是子元素的时候会触发；.capture: 事件侦听，事件发生的时候会调用
+
+### 10.Vue 中的 computed 和 watch 的区别
+   - watch擅长处理的场景：一个数据影响多个数据，实质就是将变量的get属性重写成了你所定义的那个函数，也就是说实现了数据劫持那一步
+   - computed擅长处理的场景：一个数据受多个数据影响，观察者模式将变量丢进了观察者收集器当中，变化可以被通知到
 
 
 
