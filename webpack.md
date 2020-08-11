@@ -32,8 +32,6 @@
    - 拷贝不需要参与打包的资源文件到输出目录
    - 压缩 Webpack 打包完成后输出的文件
    - 自动发布打包结果到服务器实现自动部署
-      - 开发一个插件
-         - 
 
 ### 6.项目优化
 
@@ -136,9 +134,9 @@
                     {
                         test: /\.css$/,
                         use: [
-                        // 'style-loader', // 将样式通过 style 标签注入
-                        MiniCssExtractPlugin.loader,
-                        'css-loader'
+                            // 'style-loader', // 将样式通过 style 标签注入
+                            MiniCssExtractPlugin.loader,
+                            'css-loader'
                         ]
                     }
                     ]

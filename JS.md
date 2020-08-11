@@ -384,7 +384,7 @@
         ```
 
    - 构造函数继承
-      
+      - 缺点: 方法都在构造函数中定义，每次创建实例都会创建一遍方法
       - ```
         function SuperType(){
             this.color=["red","green","blue"];
@@ -396,7 +396,7 @@
         ```
     
    - 组合继承
-
+      - 缺点：跟借用构造函数模式一样，每次创建对象都会创建一遍方法
       - ```
         function SuperType(name){
             this.name = name;
@@ -431,7 +431,7 @@
         ```
 
    - 寄生组合式继承
-
+      - 优点: 它只调用了一次 Parent 构造函数, 原型链还能保持不变
       - ```
         function inheritPrototype(subType, superType){
             var prototype = Object.create(superType.prototype); // 创建对象，创建父类原型的一个副本
