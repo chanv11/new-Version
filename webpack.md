@@ -154,3 +154,6 @@
             new OptimizeCssAssetsWebpackPlugin()
         ]
         ```
+   - externals
+      - 通过配置`externals`选项，防止某些package打包到bundle,而是在运行时(runtime)再去从外部获取这些扩展依赖
+      - 在`index.html`模板文件中，添加相关库的`cdn`引用
