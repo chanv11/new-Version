@@ -401,6 +401,10 @@
       - 目标（Target）阶段是 事件对象派发到目标元素时的阶段，如果事件类型指示其不冒泡，那事件传播将在此阶段终止。
       - 冒泡（Bubbling）阶段 和捕获相反，是以目标对象父级到 window 的过程
          - `stopPropagation`组织冒泡
+
+### CORS
+   - Access-Control-Allow-Origin：可接受的域，是一个具体域名或者*，代表任意
+   - Access-Control-Allow-Credentials：是否允许携带cookie，默认情况下，cors不会携带cookie，除非这个值是true
    
       
 

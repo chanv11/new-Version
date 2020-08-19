@@ -48,3 +48,36 @@
 ### 8.CSS动画
 
 [CSS动画](http://www.ruanyifeng.com/blog/2014/02/css_transition_and_animation.html)
+
+   - transition
+      - ```
+         transition-property: height;
+         transition-duration: 1s;
+         transition-delay: 1s;
+         transition-timing-function: ease;
+        ```，
+     - 局限
+        - transition需要事件触发，所以没法在网页加载时自动发生
+        - transition是一次性的，不能重复发生，除非一再触发
+        - transition只能定义开始状态和结束状态，不能定义中间状态，也就是说只有两个状态
+
+   - Animation
+      - ```
+         div:hover {
+            animation-name: rainbow;
+            animation-duration: 1s;
+            animation-timing-function:linear; /// 变化速度
+            animation-delay: 1s;
+            animation-fill-mode:forwards;
+            /// 让动画保持在结束状态
+            /// backwards 回到第一帧
+            animation-direction: normal; // 动画播放的方向
+            animation-iteration-count: 3;
+         }
+
+         @keyframes rainbow {
+            0% { background: #c00 }
+            50% { background: orange }
+            100% { background: yellowgreen }
+         }
+        ```

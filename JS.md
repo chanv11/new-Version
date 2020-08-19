@@ -455,7 +455,7 @@
 
         // 借用构造函数传递增强子类实例属性（支持传参和避免篡改）
         function SubType(name, age){
-            SuperType.call(this, name);
+            
             this.age = age;
         }
 
