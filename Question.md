@@ -104,4 +104,46 @@
       - `let`只是创建过程提升，初始化过程并没有提升，所以会产生暂时性死区
       - `var`的创建和初始化过程都提升了，所以在赋值前访问会得到undefined。function 的创建、初始化、赋值都被提升了
 
+###  null undefined
+   - null
+      - 表示原型链的终点
+      - 作为函数的参数，表示该函数的参数不是对象
+   - undefined
+      - 变量被声明了，但没有赋值时，就等于undefined
+      - 函数没有返回值时，默认返回undefined
+      - 调用函数时，应该提供的参数没有提供，该参数等于undefined
+      - 对象没有赋值的属性，该属性的值为undefined 
+
+### 移动端1px问题的解决办法
+   - 原理是把原先元素的 border 去掉，然后利用 :before 或者 :after 重做 border ，并 transform 的 scale 缩小一半，原先的元素相对定位，新做的 border 绝对定位。
+
+### promise和async await的区别
+   - async await与Promise一样，是非阻塞的
+   - Promise的出现解决了传统callback函数导致的“地域回调”问题，但它的语法导致了它向纵向发展行成了一个回调链，遇到复杂的业务场景，这样的语法显然也是不美观的。而async await代码看起来会简洁些，使得异步代码看起来像同步代码，await的本质是可以提供等同于”同步效果“的等待异步返回能力的语法糖，只有这一句代码执行完，才会执行下一句
+
+###  使用import时，webpack对node_modules里的依赖会做什么
+   - 当require/import 的模块不是核心模块，或./"这样的相对路径，就会从当前package的node_modules开始找，找不到就到当前package的上一层node_modules里找。。直到找到全局的node_modules。这样找到的是一个同名的文件夹，如果文件夹下有package.json,便根据main字段找到js文件
+
+### Object.keys与for in遍历的区别
+   - for in遍历对象所有可枚举属性 包括原型链上的属性
+      - hasOwnProperty 检查对象是否包含属性名，无法检查原型链上是否具有此属性名
+   - Object.keys遍历对象所有可枚举属性 不包括原型链上的属性
+
+### 数组和类数组的区别
+   - 不具有数组所具有的方法
+   - 拥有length属性，其它属性（索引）为非负整数
+
+### 常用git命令
+   - git init
+   - git add
+   - git commit
+   - git rm
+   - git branch -r  // 查看远程分支
+   - git git branch -a   // 查看所有分支
+   - git checkout -b
+   - git merge
+   - git branch -d  // 删除分支
+   - git push origin --delete [branch-name] // 删除远程分支
+   - git reset --hard   // 重置暂存区与工作区，与上一次commit保持一致
+
 
