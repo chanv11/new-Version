@@ -39,6 +39,22 @@
    - `:after / <br> : clear: both`
 - 创建父级 BFC
 - 父级设置高度
+- 使用before和after双伪元素清除浮动
+- ```
+    .clearfix:before,
+        .clearfix:after {
+            display: table;
+            content: "";    /*不用有内容也可以*/
+        }
+
+    .clearfix:after {
+        clear: both;
+    }
+
+    .clearfix {
+        *zoom: 1;
+    }
+  ```
 
 ### 7.link 与 @import 的区别
 

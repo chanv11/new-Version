@@ -146,4 +146,9 @@
    - git push origin --delete [branch-name] // 删除远程分支
    - git reset --hard   // 重置暂存区与工作区，与上一次commit保持一致
 
+### 对象函数的区别
+   - 函数可以有参数，返回值
+   - 函数有prototyp属性，对象有 ——proto_
+   - 函数也属于对象
+
 
