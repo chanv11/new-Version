@@ -151,4 +151,12 @@
    - 函数有prototyp属性，对象有 ——proto_
    - 函数也属于对象
 
+### 优化策略
+
+   - css 文件<head>中引入， js 文件<body>底部引入
+   - 减少请求 
+   - 减少文件体积 `tree-shaking` `UglifyJs` `code-spliting`
+   - 图片优化
+   - 使用缓存
+
 

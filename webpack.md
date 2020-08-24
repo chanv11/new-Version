@@ -36,6 +36,7 @@
 ### 6.项目优化
 
    - Tree Shaking
+      - `UglifyJsPlugin`
       - ```
             // ./webpack.config.js
             module.exports = {
