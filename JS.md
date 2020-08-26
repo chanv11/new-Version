@@ -499,6 +499,14 @@
       - View 用户在屏幕上看到的结构、布局和外观
       - ViewModel视图和数据之间进行通信。
 
+### jsbridge
+
+   - navigator.userAgent.toLowerCase() 判断ios Android设备
+   - ios
+      - window.webkit.messageHandlers.Bridge.postMessage
+   - Android
+      - window.android.Bridge
+
     
 
 

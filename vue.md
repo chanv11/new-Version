@@ -257,6 +257,44 @@
    - 当有获取该属性时，证明依赖于对象，被添加到收集器中
    - 重新设置值时，触发收集器的通知机制
 
+### Vue 3.0
+   - 初始化状态通过 setup 方法, 定义状态需要调用 ref 方法
+      - ```
+        import { ref, computed, watch, getCurrentInstance } from 'vue'
+        setup () {
+            const count = ref(0)
+            const add = () => {
+                count.value++
+            }
+            watch(() => count.value, val => {
+                console.log(`count is ${val}`)
+            })
+            const doubleCount = computed(() => count.value * 2)
+                return {
+                    count,
+                    add,
+                    doubleCount
+                }
+        }
+        /// 获取路由
+        import { getCurrentInstance } from 'vue'
+        setup() {
+            const { ctx } = getCurrentInstance()
+            console.log(ctx.$router.currentRoute.value)
+        }
+        /// vuex
+        const a = computed(() => ctx.$store.state.test.a)
+        ```
+
+### BS
+   - pullup //触发 上拉加载 
+   - pulldown  // 触发顶部下拉
+   - mounted 通过settimeout init BS
+   - emit上拉，下拉的方法
+   - refresh  // 暴露refesh供父组件使用
+   - watch 监听Data的变化重新refresh
+
+
 
 
 

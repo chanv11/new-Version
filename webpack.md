@@ -158,3 +158,12 @@
    - externals
       - 通过配置`externals`选项，防止某些package打包到bundle,而是在运行时(runtime)再去从外部获取这些扩展依赖
       - 在`index.html`模板文件中，添加相关库的`cdn`引用
+
+   - source map
+      - eval
+         - 打包后每个模块的代码包裹到了一个 eval 函数中， 通过sourceURL 的方式声明这个模块对应的源文件路径
+      - cheap
+         - 阉割版，比如eval-source-map只能定位到行
+      - module
+         - 带有 module 的模式，解析出来的源代码是没有经过 Loader 加工的
+         
