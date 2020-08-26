@@ -507,6 +507,30 @@
    - Android
       - window.android.Bridge
 
+### diff 算法
+
+   - vue
+      - 找到对应的真实dom，称为el
+      - 判断Vnode和oldVnode是否完全相同，如果是，那么直接return
+      - 如果他们都有文本节点并且不相等，则更新el的文本节点
+      - 如果oldVnode有子节点而Vnode没有，则删除el的子节点
+      - 如果oldVnode没有子节点而Vnode有，则将Vnode的子节点真实化之后添加到el
+      - 如果两者都有子节点，则执行updateChildren函数比较子节点
+
+   - react
+      - tree diff
+         - 两棵树只会对同一层次的节点进行比较
+
+      - component diff
+         - 如果是同一类型的组件，按照原策略继续比较 virtual DOM tree
+         - 如果不是，则将该组件判断为 dirty component，从而替换整个组件下的所有子节点
+         - 对于同一类型的组件，有可能其 Virtual DOM 没有任何变化，如果能够确切的知道这点那可以节省大量的 diff 运算时间，因此 React 允许用户通过 shouldComponentUpdate() 来判断该组件是否需要进行 diff
+
+      - element diff
+         - React diff 提供了三种节点操作，分别为：INSERT_MARKUP（插入）、MOVE_EXISTING（移动）和 REMOVE_NODE（删除）
+         - 新的 component 类型不在老集合里， 即是全新的节点，需要对新节点执行插入操作
+         - 老 component 类型，在新集合里也有，但对应的 element 不同则不能直接复用和更新，需要执行删除操作，或者老 component 不在新集合里的，也需要执行删除操作
+
     
 
 
