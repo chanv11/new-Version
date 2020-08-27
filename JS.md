@@ -516,6 +516,7 @@
       - 如果oldVnode有子节点而Vnode没有，则删除el的子节点
       - 如果oldVnode没有子节点而Vnode有，则将Vnode的子节点真实化之后添加到el
       - 如果两者都有子节点，则执行updateChildren函数比较子节点
+         -  oldCh和newCh各有两个头尾的变量StartIdx和EndIdx，它们的2个变量相互比较，一共有4种比较方式。如果4种比较都没匹配，如果设置了key，就会用key进行比较，在比较的过程中，变量会往中间靠，一旦StartIdx>EndIdx表明oldCh和newCh至少有一个已经遍历完了，就会结束比较。
 
    - react
       - tree diff

@@ -44,6 +44,7 @@
                 optimization: {
                     // 模块只导出被使用的成员
                     usedExports: true,
+                    sideEffects: true, //没有副作用
                     // 压缩输出结果
                     minimize: true,
                     // 尽可能合并每一个模块到一个函数中
@@ -87,6 +88,14 @@
                     })
                 ]
                 }
+
+                /// 魔法注释
+
+                // 魔法注释
+                import(/* webpackChunkName: 'posts' */'./posts/posts')
+                .then(({ default: posts }) => {
+                    mainElement.appendChild(posts())
+                })
              ```
 
 ### 7.不同环境下的配置
@@ -163,7 +172,6 @@
       - eval
          - 打包后每个模块的代码包裹到了一个 eval 函数中， 通过sourceURL 的方式声明这个模块对应的源文件路径
       - cheap
-         - 阉割版，比如eval-source-map只能定位到行
+         - 阉割版，比如cheap-module-source-map只能定位到行
       - module
          - 带有 module 的模式，解析出来的源代码是没有经过 Loader 加工的
-         
