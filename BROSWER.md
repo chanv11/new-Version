@@ -106,21 +106,12 @@
 ### 3.Event Loop
    - Node
       - node 11 版本中，node 下 Event Loop 已经与浏览器趋于相同
-      - `timer`
-         - timers 阶段会执行`setTimeout`和`setInterval`
-         - I/O 阶段会执行除了 close 事件，定时器和`setImmediate`的回调
-         - idle, prepare 阶段内部实现
-         - poll
-            - 执行到点的定时器
-            - 执行 poll 队列中的事件
-            - 并且当 poll 中没有定时器的情况下，会发现以下两件事情
-               - 如果 poll 队列不为空，会遍历回调队列并同步执行，直到队列为空或者系统限制
-               - 如果 poll 队列为空，会有两件事发生
-                  - 如果有`setImmediate`需要执行，poll 阶段会停止并且进入到 check 阶段执行 `setImmediate`
-                  - 如果没有`setImmediate`需要执行，会等待回调被加入到队列中并立即执行回调
-            - 如果有别的定时器需要被执行，会回到 timer 阶段执行回调。
-         - check 阶段执行`setImmediate`
-         - close callbacks 阶段执行 close 事件
+      - 先执行所有类型为 timers 的 MacroTask，然后执行所有的 MicroTask（注意 NextTick 要优先哦）；
+        进入 poll 阶段，执行几乎所有 MacroTask(除了 close callbacks 以及 timers 调度的回调和 setImmediate() 调度的回调)，然后执行所有的 MicroTask；
+        再执行所有类型为 check 的 MacroTask(setImmediate)，然后执行所有的 MicroTask；
+        再执行所有类型为 close callbacks 的 MacroTask，然后执行所有的 MicroTask；
+        至此，完成一个 Tick，回到 timers 阶段；
+
 
 
 
